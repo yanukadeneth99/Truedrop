@@ -12,15 +12,15 @@ const Hero = () => {
           <span className="absolute left-[90%]">
             <Elipse className="text-8xl" />
           </span>
-          <Image src={HeroImg} />
+          <Image src={HeroImg} alt="Hero Image" />
         </div>
         <div className=" md:w-2/4 px-4 py-4 ">
           <h2 className=" font-semibold my-4 leading-tight text-4xl ">
-            Lorem ipsum dolor sit amet consectetur adipiscing
+            Truedrop
           </h2>
           <p className="text-xl text-skin-muted sm:mb-14 mb-10">
-            rem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque
-            malesuada tincidunt arcu. Nulla neque felis, ullamcorper eget
+            Get quick started with your souldrop project by generating your own
+            contract using thirdweb.
           </p>
           <div className="flex justify-center sm:justify-start space-x-10 ">
             <Link href="/About">

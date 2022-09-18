@@ -14,17 +14,23 @@ const Footer = () => {
       </div>
       <div>
         <p className="text-white font-semibold mb-3 sm:mb-0">
-          TrueDrop 2022| All Rights Reserved
+          TrueDrop 2022 | All Rights Reserved
         </p>
       </div>
       <div className="flex ">
-        <BsGithub className="text-3xl mr-4 text-white" />
-        <span className="inline-block rounded-full mr-4">
-          <Image src={Tw} width={30} height={30} />
-        </span>
-        <span className="inline-block rounded-full mr-4">
-          <Image src={Polygon} width={30} height={30} />
-        </span>
+        <a href="https://github.com/yanukadeneth99/Truedrop">
+          <BsGithub className="text-3xl mr-4 text-white" />
+        </a>
+        <a href="#">
+          <span className="inline-block rounded-full mr-4">
+            <Image src={Tw} width={30} height={30} alt="Thirdweb" />
+          </span>
+        </a>
+        <a href="#">
+          <span className="inline-block rounded-full mr-4">
+            <Image src={Polygon} width={30} height={30} alt="Polygon" />
+          </span>
+        </a>
       </div>
     </section>
   );
