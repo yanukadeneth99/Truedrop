@@ -2,6 +2,10 @@
 
 A soulbound token based airdrop (Souldrop) initaliser used to create airdrops using thirdweb in the polygon network.
 
+## Website
+
+![Website Photo](https://i.imgur.com/SoqGRZg.png "Truedrop")
+
 ## Team
 
 - [Larry Cutts](https://github.com/ljcutts)
@@ -10,9 +14,9 @@ A soulbound token based airdrop (Souldrop) initaliser used to create airdrops us
 
 ## Tech Used
 
-- Github
-- Thirdweb
-- Polygon
+- [Thirdweb](https://thirdweb.com/)
+- [Polygon](https://polygon.technology/)
+- [Github](https://github.com/)
 
 ### License
 

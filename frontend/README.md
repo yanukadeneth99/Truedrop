@@ -1,3 +1,3 @@
-# Truedrop Web front-end
+# Truedrop Web Frontend
 
-Developed using Next JS and Thirdweb
+Developed using Next JS and Figma
