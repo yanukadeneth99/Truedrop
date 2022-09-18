@@ -16,7 +16,7 @@ const Card = ({
     <div>
       <div className="max-w-xs bg-skin-secondary rounded-xl text-[#ffffff] my-8">
         <div className="flex flex-col justify-center items-center py-8 px-8">
-          <div className="w-[256px] h-[237px] relative">
+          <div className="w-[216px] h-[237px] relative">
             <Image
               src={image}
               className="rounded-full"

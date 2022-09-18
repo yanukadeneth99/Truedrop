@@ -1,15 +1,20 @@
 import { useState } from "react";
 import { Transition } from "@headlessui/react";
+import { BiMenu } from "react-icons/bi";
+import { MdClose } from "react-icons/md";
+import { motion } from "framer-motion";
+import Link from "next/link";
 import Logo from "../assets/Logo.svg";
 import Sun from "../assets/Sun.svg";
 import Moon from "../assets/Moon.svg";
-import { BiMenu } from "react-icons/bi";
-import { MdClose } from "react-icons/md";
-import Link from "next/link";
-import { motion } from "framer-motion";
+import { useAddress, useDisconnect, useMetamask } from "@thirdweb-dev/react";
 
 const Navbar = () => {
   const [expand, setExpand]: any = useState(false);
+
+  const connectWithMetamask = useMetamask();
+  const address = useAddress();
+  const disconnectWallet = useDisconnect();
 
   return (
     <section className=" py-2 min-w-full flex justify-between sm:px-6 px-2 mb-8">
@@ -38,16 +43,28 @@ const Navbar = () => {
           </Link>
         </ul>
         <div className="flex items-center justify-between ">
-          <span className="bg-skin-secondary p-2 rounded-full  hover:scale-110 transition-all cursor-pointer">
+          {/* <span className="bg-skin-secondary p-2 rounded-full  hover:scale-110 transition-all cursor-pointer">
             <Sun width={30} height={30} />
-          </span>
+          </span> */}
           {/* Moon for darkMode */}
           {/* <span className="bg-white p-0.5 rounded-full hover:scale-110 transition-all cursor-pointer">
-          <Moon width={30} height={30} />
-        </span> */}
-          <button className="px-4 py-2 bg-skin-base font-semibold text-[18px] rounded-full text-white ml-8">
-            ConnectWallet
-          </button>
+            <Moon width={30} height={30} />
+          </span> */}
+          {address ? (
+            <button
+              onClick={disconnectWallet}
+              className="px-4 py-2 bg-skin-base font-semibold text-[18px] rounded-full text-white ml-8"
+            >
+              Connected
+            </button>
+          ) : (
+            <button
+              onClick={connectWithMetamask}
+              className="px-4 py-2 bg-skin-base font-semibold text-[18px] rounded-full text-white ml-8"
+            >
+              Connect Wallet
+            </button>
+          )}
         </div>
       </div>
 

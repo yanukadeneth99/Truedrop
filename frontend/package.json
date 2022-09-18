@@ -11,6 +11,9 @@
   "dependencies": {
     "@headlessui/react": "^1.7.2",
     "@svgr/webpack": "^6.3.1",
+    "@thirdweb-dev/react": "^3.0.2",
+    "@thirdweb-dev/sdk": "^3.0.2",
+    "ethers": "^5.7.1",
     "framer-motion": "^7.3.5",
     "next": "12.3.0",
     "next-seo": "^5.5.0",
