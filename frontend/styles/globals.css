@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
+@layer base {
+  :root {
+    --color-primary: #6F38C5;
+    --color-secondary: #231955;
+    --color-muted: #596780;
+    --color-dark: #000000;
+    --color-base-text: #212121;
+    --color-secondary-text: #040815;
+    --color-muted-text: #7A7A7A;
+    --color-base-text-dark: #E9E9E9;
+    --color-secondary-text-dark: #CBCFDE;
+    --color-muted-text-dark: #707E8F;
+  }
+
+  body {
+    @apply font-quicksand
+  }
+}
