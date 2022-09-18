@@ -19,8 +19,8 @@ const Hero = () => {
             Truedrop
           </h2>
           <p className="text-xl text-skin-muted sm:mb-14 mb-10">
-            Get quick started with your souldrop project by generating your own
-            contract using thirdweb.
+            Quick start your souldrop project by generating your own contract
+            using thirdweb.
           </p>
           <div className="flex justify-center sm:justify-start space-x-10 ">
             <Link href="/About">
