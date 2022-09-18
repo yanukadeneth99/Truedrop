@@ -1,3 +1,3 @@
 # Truedrop contracts
 
-Deployed using thirdweb
+Containing the Projects released on Thirdweb in the Polygon chain.

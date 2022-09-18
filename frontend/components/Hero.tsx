@@ -14,13 +14,13 @@ const Hero = () => {
           </span>
           <Image src={HeroImg} alt="Hero Image" />
         </div>
-        <div className=" md:w-2/4 px-4 py-4 ">
+        <div className=" md:w-2/4 px-4 py-4">
           <h2 className=" font-semibold my-4 leading-tight text-4xl ">
             Truedrop
           </h2>
           <p className="text-xl text-skin-muted sm:mb-14 mb-10">
-            Get quick started with your souldrop project by generating your own
-            contract using thirdweb.
+            Quick start your souldrop project by generating your own contract
+            using thirdweb.
           </p>
           <div className="flex justify-center sm:justify-start space-x-10 ">
             <Link href="/About">
@@ -31,14 +31,18 @@ const Hero = () => {
                 How to Use
               </motion.button>
             </Link>
-            <Link href="/drop">
+            <a
+              href="https://thirdweb.com/dashboard/0xbB7b095D779621cC4db92CdebD08f0a87FBA1D40/PersonSoulBoundNFT"
+              target="_blank"
+              rel="noreferrer"
+            >
               <motion.button
                 whileHover={{ scale: 1.1, rotate: 10 }}
                 className=" bg-primary bg-skin-base py-2 sm:py-3 px-4 sm:px-6 md:px-8 rounded-full text-yellow-50"
               >
                 Create Drop
               </motion.button>
-            </Link>
+            </a>
           </div>
         </div>
       </div>

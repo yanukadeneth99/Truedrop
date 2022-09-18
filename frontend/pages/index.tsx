@@ -10,7 +10,7 @@ const Home: NextPage = () => {
     <>
       <NextSeo
         title="Truedrop"
-        description="Easy souldrop intialiser for your projects!"
+        description="Create your souldrop using thirdweb"
       />
 
       <div className="min-h-screen flex flex-col ">
