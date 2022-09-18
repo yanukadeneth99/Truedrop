@@ -5,12 +5,18 @@ import Footer from "../components/Footer";
 import Hero from "../components/Hero";
 import Navbar from "../components/Navbar";
 import styles from "../styles/Home.module.css";
+import { motion } from "framer-motion";
 
 const Home: NextPage = () => {
   return (
     <div className="min-h-screen flex flex-col ">
       <Navbar />
-      <Hero />
+      <motion.div
+        animate={{ y: [0, -130, 0] }}
+        transition={{ duration: 2, delay: 1.5 }}
+      >
+        <Hero />
+      </motion.div>
       <Footer />
     </div>
   );

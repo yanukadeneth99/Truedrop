@@ -1,3 +1,3 @@
-# Front-end Website
+# Truedrop Web front-end
 
-Using Next JS and Thirdweb
+Developed using Next JS and Thirdweb

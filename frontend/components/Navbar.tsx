@@ -6,6 +6,7 @@ import Moon from "../assets/Moon.svg";
 import { BiMenu } from "react-icons/bi";
 import { MdClose } from "react-icons/md";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 const Navbar = () => {
   const [expand, setExpand]: any = useState(false);
@@ -21,21 +22,27 @@ const Navbar = () => {
       <div className="hidden w-[80%] md:flex justify-end items-center ">
         <ul className="sm:w-[40%]  flex justify-between  text-[18px] font-semibold md:mr-20">
           <Link href="/">
-            <li className="cursor-pointer">Home</li>
+            <li className="cursor-pointer hover:border-b-2 hover:scale-110 transition-all ">
+              Home
+            </li>
           </Link>
           <Link href="/About">
-            <li className="cursor-pointer">About</li>
+            <li className="cursor-pointer hover:border-b-2  hover:scale-110 transition-all">
+              About
+            </li>
           </Link>
           <Link href="/About">
-            <li className="cursor-pointer">How to Use</li>
+            <li className="cursor-pointer hover:border-b-2  hover:scale-110 transition-all">
+              How to Use
+            </li>
           </Link>
         </ul>
         <div className="flex items-center justify-between ">
-          <span className="bg-skin-secondary p-2 rounded-full">
+          <span className="bg-skin-secondary p-2 rounded-full  hover:scale-110 transition-all cursor-pointer">
             <Sun width={30} height={30} />
           </span>
           {/* Moon for darkMode */}
-          {/* <span className="bg-white p-0.5 rounded-full">
+          {/* <span className="bg-white p-0.5 rounded-full hover:scale-110 transition-all cursor-pointer">
           <Moon width={30} height={30} />
         </span> */}
           <button className="px-4 py-2 bg-skin-base font-semibold text-[18px] rounded-full text-white ml-8">
@@ -59,12 +66,12 @@ const Navbar = () => {
       ) : (
         <a
           href="#"
-          className="self-center text-center md:hidden z-50 fixed left-[90%] rounded-full bg-white mt-10"
+          className="self-center text-center md:hidden z-50 fixed left-[85%] rounded-full bg-white mt-10"
           onClick={() => {
             setExpand(!expand);
           }}
         >
-          <MdClose className="text-3xl text-white dark:text-black" />
+          <MdClose className="text-3xl text-black" />
         </a>
       )}
       <Transition
@@ -91,11 +98,11 @@ const Navbar = () => {
                 <li className="">Home</li>
               </Link>
               <hr className="w-full my-4 border-gray-700" />
-              <Link href="/">
+              <Link href="/About">
                 <li className="">About</li>
               </Link>
               <hr className="w-full my-4 border-gray-700" />
-              <Link href="/">
+              <Link href="/About">
                 <li className="">How to Use</li>
               </Link>
               <hr className="w-full my-4 border-gray-700" />

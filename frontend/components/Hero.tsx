@@ -2,6 +2,7 @@ import HeroImg from "../assets/Hero.png";
 import Image from "next/image";
 import Elipse from "../assets/elipse.svg";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 const Hero = () => {
   return (
@@ -23,14 +24,20 @@ const Hero = () => {
           </p>
           <div className="flex justify-center sm:justify-start space-x-10 ">
             <Link href="/About">
-              <button className=" bg-primary bg-skin-base py-2 sm:py-3 px-4 sm:px-6 md:px-8 rounded-full text-yellow-50 ">
+              <motion.button
+                whileHover={{ scale: 1.1, rotate: -10 }}
+                className=" bg-primary bg-skin-base py-2 sm:py-3 px-4 sm:px-6 md:px-8 rounded-full text-yellow-50 "
+              >
                 How to Use
-              </button>
+              </motion.button>
             </Link>
             <Link href="/drop">
-              <button className=" bg-primary bg-skin-base py-2 sm:py-3 px-4 sm:px-6 md:px-8 rounded-full text-yellow-50">
+              <motion.button
+                whileHover={{ scale: 1.1, rotate: 10 }}
+                className=" bg-primary bg-skin-base py-2 sm:py-3 px-4 sm:px-6 md:px-8 rounded-full text-yellow-50"
+              >
                 Create Drop
-              </button>
+              </motion.button>
             </Link>
           </div>
         </div>
