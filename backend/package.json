@@ -1,15 +1,18 @@
 {
-  "name": "truedrop-backend",
+  "name": "hardhat-javascript-starter",
   "scripts": {
     "build": "npx thirdweb@latest detect",
     "deploy": "npx thirdweb@latest deploy",
     "release": "npx thirdweb@latest release"
   },
   "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^2.0.0",
     "hardhat": "^2.10.1"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.3",
-    "@thirdweb-dev/contracts": "^3"
+    "@thirdweb-dev/contracts": "^3",
+    "keccak256": "^1.0.6",
+    "merkletreejs": "^0.2.32"
   }
 }

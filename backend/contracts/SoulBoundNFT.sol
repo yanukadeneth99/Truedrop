@@ -1,6 +1,7 @@
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "../interfaces/ISoulBoundNFT.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
@@ -9,7 +10,7 @@ error ALREADY_HAVE_TOKEN();
 error ALREADY_HAVE_PASSWORD();
 error WRONG_PASSWORD();
 
-contract SoulBoundNFT {
+contract SoulBoundNFT is Ownable {
     using Address for address;
     using Strings for uint256;
     event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
@@ -19,6 +20,8 @@ contract SoulBoundNFT {
 
     // Token symbol
     string private _symbol;
+
+    string private _baseURI;
 
      mapping(uint256 => address) private _owners;
 
@@ -43,12 +46,12 @@ contract SoulBoundNFT {
     function tokenURI(uint256 tokenId) public view virtual returns (string memory) {
         _requireMinted(tokenId);
 
-        string memory baseURI = _baseURI();
+        string memory baseURI = _returnBaseURI();
         return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString())) : "";
     }
 
-     function _baseURI() internal view virtual returns (string memory) {
-        return "";
+     function _returnBaseURI() internal view virtual returns (string memory) {
+        return _baseURI;
     }
 
       function _ownerOf(uint256 tokenId) internal view virtual returns (address) {
@@ -61,14 +64,13 @@ contract SoulBoundNFT {
 
     
      function _mint(address to, uint256 tokenId, string calldata passwordGuess) internal virtual {
-       bool value = isThisCorrectPassword(passwordGuess);
+       bool value = isThisCorrectPassword(passwordGuess, to);
          if(value == false) {
            revert WRONG_PASSWORD();
          }
-        if(alreadyHaveToken[msg.sender] == true) {
+        if(alreadyHaveToken[to] == true) {
             revert ALREADY_HAVE_TOKEN();
         }
-
         require(to != address(0), "ERC721: mint to the zero address");
         require(!_exists(tokenId), "ERC721: token already minted");
 
@@ -104,10 +106,10 @@ contract SoulBoundNFT {
       password[msg.sender] = hash;
     }
 
-    function isThisCorrectPassword(string calldata guess) public view virtual returns(bool) {
-       bytes memory hash = abi.encode(guess);
-       bytes memory currentPassword = password[msg.sender];
-       return keccak256(abi.encodePacked(hash)) == keccak256(abi.encodePacked(currentPassword)) && currentPassword.length != 0;
+    function isThisCorrectPassword(string calldata guess, address user) public view virtual returns(bool) {
+       bytes memory thisHash = abi.encode(guess);
+       bytes memory currentPassword = password[user];
+       return keccak256(thisHash) == keccak256(currentPassword) && currentPassword.length != 0;
     }
 
       function supportsInterface(bytes4 interfaceId) public view virtual returns (bool) {
@@ -118,6 +120,9 @@ contract SoulBoundNFT {
         require(_exists(tokenId), "ERC721: invalid token ID");
     }
 
+    function setBaseURI(string calldata baseURI) public onlyOwner {
+       _baseURI = baseURI;
+    }
 
       function _beforeTokenTransfer(
         address from,
