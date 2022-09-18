@@ -4,30 +4,31 @@ const { MerkleTree } = require("merkletreejs");
 const keccak256 = require("keccak256");
 const { arrayify } = require("ethers/lib/utils");
 
-describe("Ticket", async function () {
+describe("SoulDrop", async function () {
   it("Should be able to deploy and claim SoulBoundNFT", async function () {
-    const [owner, addr1, addr2] = await ethers.getSigners();
+    const [owner, addr1, addr2, addr3] = await ethers.getSigners();
     const NFT = await ethers.getContractFactory("SoulBoundNFT");
-    this.nft = await NFT.deploy("afasdf", "asdfafds");
-    const receipt = await this.nft.deployTransaction.wait();
-    contractBlocknumber = receipt.blockNumber;
-    console.log(contractBlocknumber)
-   const currentBlockNumber = await ethers.getDefaultProvider().getBlockNumber();
-   await this.nft.connect(addr1).setPassword("hello")
-   await this.nft.connect(addr1)._mint(addr1.address, 1, "hello")
-   const filter = this.nft.filters.Transfer();
-   const results = await this.nft.queryFilter(filter, contractBlocknumber, currentBlockNumber);
-   console.log(results)
-   const leafNodes = results.map((i) => keccak256(i.args.to.toString()));
-    this.merkleTree = new MerkleTree(leafNodes, keccak256, {
-      sortPairs: true,
+    const nft = await NFT.connect(owner).deploy("afasdf", "asdfafds");
+    await nft.deployed();
+    const currentBlockNumber = await ethers.getDefaultProvider().getBlockNumber();
+    await nft.connect(addr1).setPassword("hello");
+    await nft.connect(addr2).setPassword("biscuit");
+    await nft.connect(addr1)._mint(addr1.address, 1, "hello");
+    const filter = nft.filters.Transfer();
+     const results = await nft.queryFilter(filter, 1, currentBlockNumber);
+     console.log(results.map(i => i.args.to))
+     const leafNodes = results.map((i) => keccak256(i.args.to.toString()));
+     const merkleTree = new MerkleTree(leafNodes, keccak256, {
+       sortPairs: true,
+     });
+     const rootHash = merkleTree.getRoot();
+     const SoulDrop = await ethers.getContractFactory("SoulDrop");
+     const soulDrop = await SoulDrop.deploy(rootHash, nft.address, 100, 100, "asdaf", "asdafd");
+     await soulDrop.deployed();
+     const nftAddress = await soulDrop.soulBoundNFTAddress();
+     expect(nftAddress).to.equal(nft.address)
+     const proof = merkleTree.getHexProof(keccak256(addr1.address));
+     await soulDrop.connect(addr1).setPassword("hello2");
+     await soulDrop.connect(addr1).claim(proof, "hello", "hello2")
     });
-    const rootHash = this.merkleTree.getRoot();
-   const SoulDrop = await ethers.getContractFactory("SoulDrop");
-   const soulDrop = await SoulDrop.deploy(rootHash, 100, 100, 1, "asdaf", "asdafd")
-   await soulDrop.deployed();
-   const proof = this.merkleTree.getHexProof(keccak256(addr2.address));
-   soulDrop.connect(addr2).claim(proof, "hello")
-   soulDrop.connect(addr1).claim(proof, "hellokjlkjjk");
-  });
 });

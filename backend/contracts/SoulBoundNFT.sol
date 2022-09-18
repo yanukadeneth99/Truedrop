@@ -63,12 +63,12 @@ contract SoulBoundNFT is Ownable {
     }
 
     
-     function _mint(address to, uint256 tokenId, string calldata passwordGuess) internal virtual {
-       bool value = isThisCorrectPassword(passwordGuess);
+     function _mint(address to, uint256 tokenId, string calldata passwordGuess) public virtual {
+       bool value = isThisCorrectPassword(passwordGuess, to);
          if(value == false) {
            revert WRONG_PASSWORD();
          }
-        if(alreadyHaveToken[msg.sender] == true) {
+        if(alreadyHaveToken[to] == true) {
             revert ALREADY_HAVE_TOKEN();
         }
 
@@ -107,10 +107,10 @@ contract SoulBoundNFT is Ownable {
       password[msg.sender] = hash;
     }
 
-    function isThisCorrectPassword(string calldata guess) public view virtual returns(bool) {
-       bytes memory hash = abi.encode(guess);
-       bytes memory currentPassword = password[msg.sender];
-       return keccak256(abi.encodePacked(hash)) == keccak256(abi.encodePacked(currentPassword)) && currentPassword.length != 0;
+    function isThisCorrectPassword(string calldata guess, address user) public view virtual returns(bool) {
+       bytes memory thisHash = abi.encode(guess);
+       bytes memory currentPassword = password[user];
+       return keccak256(thisHash) == keccak256(currentPassword) && currentPassword.length != 0;
     }
 
       function supportsInterface(bytes4 interfaceId) public view virtual returns (bool) {

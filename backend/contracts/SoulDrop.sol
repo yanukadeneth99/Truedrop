@@ -17,23 +17,22 @@ contract SoulDrop is Ownable, SoulBoundNFT {
     address public soulBoundNFTAddress;
     uint private currentTokenId;
     bytes32 public immutable root;
-    uint256 public immutable claimAmount;
     uint public immutable launchTime;
     uint256 private _numberOfClaims;
     uint private _claimDeadline;
     uint public claimFee;
 
-   mapping(address => bool) claimed;
+   mapping(address => bool) private claimed;
 
-   constructor(bytes32 _root, uint _claimAmount, uint claimDeadline_, uint _currentTokenId, string memory _name, string memory _symbol) SoulBoundNFT(_name, _symbol) {
+   constructor(bytes32 _root, address _soulBoundNFTAddress, uint claimDeadline_, uint _currentTokenId, string memory _name, string memory _symbol) SoulBoundNFT(_name, _symbol) {
      root = _root;
-     claimAmount = _claimAmount;
      launchTime = block.timestamp;
      _claimDeadline = claimDeadline_ + block.timestamp;
      currentTokenId = _currentTokenId;
+     soulBoundNFTAddress = _soulBoundNFTAddress;
    }
 
-    function claim(bytes32[] calldata _proof, string calldata passwordGuess) external payable {
+    function claim(bytes32[] calldata _proof, string calldata passwordGuess, string calldata passwordGuess2) external payable {
         if(msg.sender != tx.origin) {
           revert NO_BOTS_ALLOWED();
         }
@@ -43,29 +42,23 @@ contract SoulDrop is Ownable, SoulBoundNFT {
         if(claimFee > 0 && msg.value != claimFee) {
             revert INSUFFICIENT_FUNDS();
         }
-        bool value = ISoulBoundNFT(soulBoundNFTAddress).isThisCorrectPassword(passwordGuess);
+        bool value = ISoulBoundNFT(soulBoundNFTAddress).isThisCorrectPassword(passwordGuess, msg.sender);
          if(value == false) {
            revert WRONG_PASSWORD();
          }
          if(claimed[msg.sender] == true) {
             revert ALREADY_CLAIMED_AIRDROP();
          }
-        bytes32 _leaf = keccak256(abi.encodePacked(msg.sender));
-        if(!MerkleProof.verify(_proof, root, _leaf)) {
+        bool valid = _areYouEligibleToClaim(msg.sender, _proof);
+        if(valid == false) {
             revert INVALID_MERKLE_PROOF();
         }
-        claimed[msg.sender] = true;
-        if(claimAmount > 1) {
-           for(uint i = 0; i <= claimAmount; i++) {
-           _mint(msg.sender, currentTokenId, passwordGuess);
-           emit Claim(msg.sender, currentTokenId);
-           currentTokenId++;
-          }  
-        } else {
-           _mint(msg.sender, currentTokenId, passwordGuess);
-           emit Claim(msg.sender, currentTokenId);
-           currentTokenId++;
-        }
+         claimed[msg.sender] = true;
+         _mint(msg.sender, currentTokenId, passwordGuess2);
+         emit Claim(msg.sender, currentTokenId);
+        currentTokenId++;
+        _numberOfClaims++;
+        
     }
 
      function areYouEligibleToClaim(address addr, bytes32[] calldata proof)
@@ -86,6 +79,10 @@ contract SoulDrop is Ownable, SoulBoundNFT {
         return isValidLeaf;
     }
 
+    function haveYouClaimed() external view returns(bool) {
+        return claimed[msg.sender];
+    }
+
     function numberOfClaims() external view returns(uint) {
         return _numberOfClaims;
     }
@@ -96,9 +93,5 @@ contract SoulDrop is Ownable, SoulBoundNFT {
 
     function setClaimFee(uint _newFee) external onlyOwner {
       claimFee = _newFee;
-    }
-
-    function setSoulBoundNFTAddress(address _soulBoundNFTAddress) external onlyOwner {
-       soulBoundNFTAddress = _soulBoundNFTAddress;
     }
 }
