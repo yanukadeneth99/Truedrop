@@ -15,8 +15,9 @@ const Hero = () => {
           <Image src={HeroImg} alt="Hero Image" />
         </div>
         <div className=" md:w-2/4 px-4 py-4">
-          <h2 className=" font-semibold my-4 leading-tight text-4xl ">
-            Truedrop
+          <h2 className=" font-semibold my-4 leading-tight text-4xl">
+            <span className="text-primary">True</span>
+            <span className="text-secondary">drop</span>
           </h2>
           <p className="text-xl text-skin-muted sm:mb-14 mb-10">
             Quick start your souldrop project by generating your own contract
