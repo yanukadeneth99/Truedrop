@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Transition } from "@headlessui/react";
 import { BiMenu } from "react-icons/bi";
 import { MdClose } from "react-icons/md";
@@ -8,10 +8,15 @@ import Logo from "../assets/Logo.svg";
 import Sun from "../assets/Sun.svg";
 import Moon from "../assets/Moon.svg";
 import { useAddress, useDisconnect, useMetamask } from "@thirdweb-dev/react";
+import { useTheme } from "next-themes";
 
 const Navbar = () => {
   const [expand, setExpand]: any = useState(false);
 
+  // For Theme
+  const { theme, setTheme } = useTheme();
+
+  // Third web connection
   const connectWithMetamask = useMetamask();
   const address = useAddress();
   const disconnectWallet = useDisconnect();
@@ -43,13 +48,23 @@ const Navbar = () => {
           </Link>
         </ul>
         <div className="flex items-center justify-between ">
-          {/* <span className="bg-skin-secondary p-2 rounded-full  hover:scale-110 transition-all cursor-pointer">
+          <span
+            onClick={() => setTheme("light")}
+            className={`${
+              theme == "light" && "hidden"
+            } bg-skin-secondary p-2 rounded-full hover:scale-110 transition-all cursor-pointer`}
+          >
             <Sun width={30} height={30} />
-          </span> */}
+          </span>
           {/* Moon for darkMode */}
-          {/* <span className="bg-white p-0.5 rounded-full hover:scale-110 transition-all cursor-pointer">
+          <span
+            onClick={() => setTheme("dark")}
+            className={` ${theme == "dark" && "hidden"} ${
+              theme ?? "hidden"
+            } bg-white p-2 rounded-full hover:scale-110 transition-all cursor-pointer`}
+          >
             <Moon width={30} height={30} />
-          </span> */}
+          </span>
           {address ? (
             <button
               onClick={disconnectWallet}
@@ -133,9 +148,21 @@ const Navbar = () => {
               {/* <span className="bg-white p-0.5 rounded-full">
           <Moon width={30} height={30} />
         </span> */}
-              <button className="px-4 py-2 bg-skin-base font-semibold text-[18px] rounded-full text-white mt-3">
-                ConnectWallet
-              </button>
+              {address ? (
+                <button
+                  onClick={disconnectWallet}
+                  className="px-4 py-2 bg-skin-base font-semibold text-[18px] rounded-full text-white ml-8"
+                >
+                  Connected
+                </button>
+              ) : (
+                <button
+                  onClick={connectWithMetamask}
+                  className="px-4 py-2 bg-skin-base font-semibold text-[18px] rounded-full text-white ml-8"
+                >
+                  Connect Wallet
+                </button>
+              )}
             </div>
           </div>
         </div>
