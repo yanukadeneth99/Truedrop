@@ -140,14 +140,24 @@ const Navbar = () => {
               <hr className="w-full my-4 border-gray-700" />
             </ul>
             <div className=" ">
-              <span className="bg-skin-secondary p-0.5 rounded-full block ">
+              <span
+                onClick={() => setTheme("light")}
+                className={` ${
+                  theme == "light" && "hidden"
+                } bg-skin-secondary p-0.5 rounded-full block `}
+              >
                 <Sun width={30} height={30} />
               </span>
-              <hr className="w-full my-4 border-gray-700" />
               {/* Moon for darkMode */}
-              {/* <span className="bg-white p-0.5 rounded-full">
-          <Moon width={30} height={30} />
-        </span> */}
+              <span
+                onClick={() => setTheme("dark")}
+                className={` ${theme == "dark" && "hidden"} ${
+                  theme ?? "hidden"
+                } bg-skin-secondary text-white p-0.5 rounded-full block`}
+              >
+                <Moon width={30} height={30} />
+              </span>
+              <hr className="w-full my-4 border-gray-700" />
               {address ? (
                 <button
                   onClick={disconnectWallet}

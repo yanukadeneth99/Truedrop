@@ -3,8 +3,11 @@ import Image from "next/image";
 import Elipse from "../assets/elipse.svg";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useAddress, useDisconnect, useMetamask } from "@thirdweb-dev/react";
 
 const Hero = () => {
+  const address = useAddress();
+
   return (
     <section className=" px-2">
       <div className="md:flex items-center justify-around ">
@@ -32,18 +35,28 @@ const Hero = () => {
                 How to Use
               </motion.button>
             </Link>
-            <a
-              href="https://thirdweb.com/0xbB7b095D779621cC4db92CdebD08f0a87FBA1D40/SoulDrop"
-              target="_blank"
-              rel="noreferrer"
-            >
+            {address ? (
+              <a
+                href="https://thirdweb.com/0xbB7b095D779621cC4db92CdebD08f0a87FBA1D40/SoulDrop"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <motion.button
+                  whileHover={{ scale: 1.1, rotate: 10 }}
+                  className=" bg-primary bg-skin-base py-2 sm:py-3 px-4 sm:px-6 md:px-8 rounded-full text-yellow-50"
+                >
+                  Create Drop
+                </motion.button>
+              </a>
+            ) : (
               <motion.button
                 whileHover={{ scale: 1.1, rotate: 10 }}
-                className=" bg-primary bg-skin-base py-2 sm:py-3 px-4 sm:px-6 md:px-8 rounded-full text-yellow-50"
+                disabled
+                className="btn btn-ghost bg-skin-base py-2 sm:py-3 px-4 sm:px-6 md:px-8 rounded-full text-yellow-50"
               >
-                Create Drop
+                Login First
               </motion.button>
-            </a>
+            )}
           </div>
         </div>
       </div>
