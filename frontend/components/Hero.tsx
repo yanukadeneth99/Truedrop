@@ -32,7 +32,7 @@ const Hero = () => {
               </motion.button>
             </Link>
             <a
-              href="https://thirdweb.com/dashboard/0xbB7b095D779621cC4db92CdebD08f0a87FBA1D40/PersonSoulBoundNFT"
+              href="https://thirdweb.com/0xbB7b095D779621cC4db92CdebD08f0a87FBA1D40/SoulDrop"
               target="_blank"
               rel="noreferrer"
             >
