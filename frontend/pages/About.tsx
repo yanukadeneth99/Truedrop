@@ -20,7 +20,7 @@ const About: NextPage = () => {
           <h2 className="font-semibold text-3xl mb-8 mt-6">
             What is TrueDrop?
           </h2>
-          <article className="text-skin-secondary text-2xl">
+          <article className="text-2xl">
             Truedrop is an initialiser which you can use to quick start your
             souldrop project easily. Souldrop is similar to airdrop where
             airdrop has vulnerabilities like the sybil attack, souldrop uses
@@ -30,9 +30,13 @@ const About: NextPage = () => {
         <hr className="w-[100px] mx-auto border-dashed border-black  my-10" />
         <div className="text-center md:w-1/2 mx-auto px-5 ">
           <h2 className="font-semibold text-3xl mb-8 mt-6">How to Use</h2>
-          <article className="text-skin-secondary text-2xl">
+          <article className="text-2xl py-2">
             Click Create Drop at the Home page to generate your own souldrop
-            contract quick and easy.
+            contract quick and easy using thirdweb.
+          </article>
+          <article className="text-2xl py-2">
+            After the page loads from thirdweb, make sure to select the right
+            version and click deploy. Thirdweb will handle everything for you!
           </article>
         </div>
         <hr className="w-[100px] mx-auto border-dashed border-black  my-10" />
