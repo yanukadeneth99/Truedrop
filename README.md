@@ -4,7 +4,7 @@ A soulbound token based airdrop (Souldrop) initaliser used to create airdrops us
 
 ## Website
 
-![Website Photo](https://i.imgur.com/SoqGRZg.png "Truedrop")
+![Website Photo](https://i.imgur.com/2DXNT08.png "Truedrop")
 
 ## Team
 
