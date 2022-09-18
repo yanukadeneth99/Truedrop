@@ -1,6 +1,7 @@
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "../interfaces/ISoulBoundNFT.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
@@ -9,7 +10,7 @@ error ALREADY_HAVE_TOKEN();
 error ALREADY_HAVE_PASSWORD();
 error WRONG_PASSWORD();
 
-contract SoulBoundNFT {
+contract SoulBoundNFT is Ownable {
     using Address for address;
     using Strings for uint256;
     event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
@@ -19,6 +20,8 @@ contract SoulBoundNFT {
 
     // Token symbol
     string private _symbol;
+
+    string private _baseURI;
 
      mapping(uint256 => address) private _owners;
 
@@ -43,12 +46,12 @@ contract SoulBoundNFT {
     function tokenURI(uint256 tokenId) public view virtual returns (string memory) {
         _requireMinted(tokenId);
 
-        string memory baseURI = _baseURI();
+        string memory baseURI = _returnBaseURI();
         return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString())) : "";
     }
 
-     function _baseURI() internal view virtual returns (string memory) {
-        return "";
+     function _returnBaseURI() internal view virtual returns (string memory) {
+        return _baseURI;
     }
 
       function _ownerOf(uint256 tokenId) internal view virtual returns (address) {
@@ -118,6 +121,9 @@ contract SoulBoundNFT {
         require(_exists(tokenId), "ERC721: invalid token ID");
     }
 
+    function setBaseURI(string calldata baseURI) public onlyOwner {
+       _baseURI = baseURI;
+    }
 
       function _beforeTokenTransfer(
         address from,

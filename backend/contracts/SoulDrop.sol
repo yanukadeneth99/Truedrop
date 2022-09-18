@@ -1,7 +1,6 @@
 import "./SoulBoundNFT.sol";
 import "../interfaces/ISoulBoundNFT.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 //SPDX-License-Identifier: MIT
@@ -10,28 +9,39 @@ pragma solidity ^0.8.15;
 error ALREADY_CLAIMED_AIRDROP();
 error INVALID_MERKLE_PROOF();
 error CLAIM_DEADLINE_HAS_PASSED();
+error INSUFFICIENT_FUNDS();
+error NO_BOTS_ALLOWED();
 
-contract SoulDrop is SoulBoundNFT, Ownable {
+contract SoulDrop is Ownable, SoulBoundNFT {
     event Claim(address indexed to, uint256 amount);
     address public soulBoundNFTAddress;
+    uint private currentTokenId;
     bytes32 public immutable root;
-    uint256 public immutable rewardAmount;
+    uint256 public immutable claimAmount;
     uint public immutable launchTime;
     uint256 private _numberOfClaims;
     uint private _claimDeadline;
+    uint public claimFee;
 
    mapping(address => bool) claimed;
 
-   constructor(bytes32 _root, uint _rewardAmount, uint claimDeadline_, string memory _name, string memory _symbol) SoulBoundNFT(_name, _symbol) {
+   constructor(bytes32 _root, uint _claimAmount, uint claimDeadline_, uint _currentTokenId, string memory _name, string memory _symbol) SoulBoundNFT(_name, _symbol) {
      root = _root;
-     rewardAmount = _rewardAmount;
+     claimAmount = _claimAmount;
      launchTime = block.timestamp;
      _claimDeadline = claimDeadline_ + block.timestamp;
+     currentTokenId = _currentTokenId;
    }
 
-    function claim(bytes32[] calldata _proof, string calldata passwordGuess) external {
+    function claim(bytes32[] calldata _proof, string calldata passwordGuess) external payable {
+        if(msg.sender != tx.origin) {
+          revert NO_BOTS_ALLOWED();
+        }
         if(block.timestamp > _claimDeadline) {
             revert CLAIM_DEADLINE_HAS_PASSED();
+        }
+        if(claimFee > 0 && msg.value != claimFee) {
+            revert INSUFFICIENT_FUNDS();
         }
         bool value = ISoulBoundNFT(soulBoundNFTAddress).isThisCorrectPassword(passwordGuess);
          if(value == false) {
@@ -44,9 +54,18 @@ contract SoulDrop is SoulBoundNFT, Ownable {
         if(!MerkleProof.verify(_proof, root, _leaf)) {
             revert INVALID_MERKLE_PROOF();
         }
-        _mint(msg.sender, rewardAmount);
         claimed[msg.sender] = true;
-        emit Claim(msg.sender, rewardAmount);
+        if(claimAmount > 1) {
+           for(uint i = 0; i <= claimAmount; i++) {
+           _mint(msg.sender, currentTokenId, passwordGuess);
+           emit Claim(msg.sender, currentTokenId);
+           currentTokenId++;
+          }  
+        } else {
+           _mint(msg.sender, currentTokenId, passwordGuess);
+           emit Claim(msg.sender, currentTokenId);
+           currentTokenId++;
+        }
     }
 
      function areYouEligibleToClaim(address addr, bytes32[] calldata proof)
@@ -73,6 +92,10 @@ contract SoulDrop is SoulBoundNFT, Ownable {
 
     function claimDeadline() external view returns(uint) {
         return _claimDeadline;
+    }
+
+    function setClaimFee(uint _newFee) external onlyOwner {
+      claimFee = _newFee;
     }
 
     function setSoulBoundNFTAddress(address _soulBoundNFTAddress) external onlyOwner {
