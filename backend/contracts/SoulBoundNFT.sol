@@ -63,7 +63,7 @@ contract SoulBoundNFT is Ownable {
     }
 
     
-     function _mint(address to, uint256 tokenId, string calldata passwordGuess) public virtual {
+     function _mint(address to, uint256 tokenId, string calldata passwordGuess) internal virtual {
        bool value = isThisCorrectPassword(passwordGuess, to);
          if(value == false) {
            revert WRONG_PASSWORD();
@@ -71,7 +71,6 @@ contract SoulBoundNFT is Ownable {
         if(alreadyHaveToken[to] == true) {
             revert ALREADY_HAVE_TOKEN();
         }
-
         require(to != address(0), "ERC721: mint to the zero address");
         require(!_exists(tokenId), "ERC721: token already minted");
 
